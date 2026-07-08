@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useChat } from "../hooks/useChat";
+import { calculateWaterUsage } from "../utils/waterUsage";
+import type { WaterUsageResult } from "../types/waterUsage";
 import { Message } from "./Message";
 import { ChatInput } from "./ChatInput";
 import { WaterUsageStats } from "./WaterUsageStats";
@@ -8,6 +10,11 @@ import tapOffImage from "../assets/images/tap-off.png";
 
 export function ChatContainer() {
   const { messages, isLoading, sendMessage } = useChat();
+  const [waterUsage, setWaterUsage] = useState<WaterUsageResult>({
+    modelUsages: [],
+    averageUsage: 0,
+    holdDurationMs: 0,
+  });
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const prevIsLoadingRef = useRef(isLoading);
   const [showPopup, setShowPopup] = useState(false);
@@ -27,6 +34,9 @@ export function ChatContainer() {
       // Verify last message is an assistant message with content
       const lastMessage = messages[messages.length - 1];
       if (lastMessage?.role === "assistant" && lastMessage.content) {
+        // Calculate and commit water usage FIRST
+        setWaterUsage(calculateWaterUsage(messages));
+        // THEN show popup
         setShowPopup(true);
       }
     }
@@ -34,7 +44,7 @@ export function ChatContainer() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      <WaterUsageStats visible={hasMessages} />
+      <WaterUsageStats visible={hasMessages} modelUsages={waterUsage.modelUsages} />
 
       {/* Header - animates from centered to top */}
       <header className={`
@@ -87,7 +97,7 @@ export function ChatContainer() {
           <ChatInput onSend={sendMessage} disabled={isLoading} />
         </div>
       </div>
-      <TapPopup visible={showPopup} onComplete={() => setShowPopup(false)} />
+      <TapPopup visible={showPopup} onComplete={() => setShowPopup(false)} holdDurationMs={waterUsage.holdDurationMs} />
     </div>
   );
 }

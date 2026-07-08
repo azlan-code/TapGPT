@@ -8,16 +8,17 @@ import tapOn5 from "../assets/images/tap-on-5.png";
 import tapOn6 from "../assets/images/tap-on-6.png";
 
 const TAP_ON_FRAMES = [tapOn1, tapOn2, tapOn3, tapOn4, tapOn5, tapOn6];
-const TOTAL_HOLD_DURATION_MS = 3000;
+const DEFAULT_HOLD_DURATION_MS = 3000;
 const PROGRESS_UPDATE_INTERVAL_MS = 50;
 const FRAME_DURATION_MS = 100;
 
 interface TapPopupProps {
   visible: boolean;
   onComplete: () => void;
+  holdDurationMs?: number;
 }
 
-export function TapPopup({ visible, onComplete }: TapPopupProps) {
+export function TapPopup({ visible, onComplete, holdDurationMs = DEFAULT_HOLD_DURATION_MS }: TapPopupProps) {
   const [progress, setProgress] = useState(0);
   const [isHolding, setIsHolding] = useState(false);
   const [currentFrame, setCurrentFrame] = useState(0);
@@ -43,7 +44,7 @@ export function TapPopup({ visible, onComplete }: TapPopupProps) {
   // Handle progress bar filling
   useEffect(() => {
     if (isHolding && progress < 100) {
-      const increment = (PROGRESS_UPDATE_INTERVAL_MS / TOTAL_HOLD_DURATION_MS) * 100;
+      const increment = (PROGRESS_UPDATE_INTERVAL_MS / holdDurationMs) * 100;
       progressIntervalRef.current = window.setInterval(() => {
         setProgress((prev) => {
           const next = prev + increment;
@@ -61,7 +62,7 @@ export function TapPopup({ visible, onComplete }: TapPopupProps) {
         progressIntervalRef.current = null;
       }
     };
-  }, [isHolding, progress]);
+  }, [isHolding, progress, holdDurationMs]);
 
   // Handle completion
   useEffect(() => {
@@ -117,7 +118,7 @@ export function TapPopup({ visible, onComplete }: TapPopupProps) {
           <img
             src={currentImage}
             alt="Tap to verify"
-            className="h-50 w-50 object-contain select-none touch-none cursor-pointer"
+            className="h-50 w-50 object-contain select-none touch-none"
             draggable={false}
             onMouseDown={startHolding}
             onMouseUp={stopHolding}
@@ -135,7 +136,7 @@ export function TapPopup({ visible, onComplete }: TapPopupProps) {
 
         <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
           <div
-            className="h-full bg-black transition-all duration-50"
+            className="h-full bg-[#02A0DF] transition-all duration-50"
             style={{ width: `${progress}%` }}
           />
         </div>

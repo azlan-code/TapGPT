@@ -1,1 +1,9 @@
 @import "tailwindcss";
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    cursor: url("/src/assets/images/cursor.svg") 9 0, auto;
+  }
+}

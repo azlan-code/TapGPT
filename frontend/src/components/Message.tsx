@@ -16,7 +16,7 @@ export function Message({ message, isTyping, blurred }: MessageProps) {
     <div className={`flex ${isUser ? "justify-end" : "justify-start"} mb-4`}>
       <div
         className={`max-w-[80%] px-4 py-3 rounded-lg border border-black ${
-          isUser ? "bg-gray-100" : "bg-white"
+          isUser ? "bg-[#02A0DF]" : "bg-gray-100"
         }`}
       >
         <div className="transition-all duration-300">
