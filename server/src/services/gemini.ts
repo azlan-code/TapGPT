@@ -16,7 +16,7 @@ export async function* streamChat(
   const contents = convertToGeminiMessages(messages);
 
   const response = await genai.models.generateContentStream({
-    model: "gemini-2.0-flash-lite",
+    model: "gemini-3.1-flash-lite",
     contents,
   });
 
