@@ -6,9 +6,10 @@ import { TypingIndicator } from "./TypingIndicator";
 interface MessageProps {
   message: ChatMessage;
   isTyping?: boolean;
+  blurred?: boolean;
 }
 
-export function Message({ message, isTyping }: MessageProps) {
+export function Message({ message, isTyping, blurred }: MessageProps) {
   const isUser = message.role === "user";
 
   return (
@@ -18,17 +19,19 @@ export function Message({ message, isTyping }: MessageProps) {
           isUser ? "bg-gray-100" : "bg-white"
         }`}
       >
-        {isUser ? (
-          <p className="text-black whitespace-pre-wrap">{message.content}</p>
-        ) : isTyping ? (
-          <TypingIndicator />
-        ) : (
-          <div className="text-black prose prose-sm max-w-none prose-pre:bg-gray-100 prose-pre:border prose-pre:border-black prose-code:before:content-none prose-code:after:content-none">
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
-              {message.content}
-            </ReactMarkdown>
-          </div>
-        )}
+        <div className="transition-all duration-300">
+          {isUser ? (
+            <p className="text-black whitespace-pre-wrap">{message.content}</p>
+          ) : isTyping ? (
+            <TypingIndicator />
+          ) : (
+            <div className={`text-black prose prose-sm max-w-none prose-pre:bg-gray-100 prose-pre:border prose-pre:border-black prose-code:before:content-none prose-code:after:content-none ${blurred ? "blur-sm select-none" : ""}`}>
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                {message.content}
+              </ReactMarkdown>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
