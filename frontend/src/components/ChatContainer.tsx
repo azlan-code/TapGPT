@@ -7,6 +7,7 @@ import { ChatInput } from "./ChatInput";
 import { WaterUsageStats } from "./WaterUsageStats";
 import { TapPopup } from "./TapPopup";
 import tapOffImage from "../assets/images/tap-off.png";
+import asciiSinkImage from "../assets/images/ascii-sink.svg";
 
 export function ChatContainer() {
   const { messages, isLoading, sendMessage } = useChat();
@@ -44,13 +45,19 @@ export function ChatContainer() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
+      <img
+        src={asciiSinkImage}
+        alt=""
+        aria-hidden="true"
+        className="fixed bottom-0 left-0 pointer-events-none z-0 w-full max-w-[750px]"
+      />
       <WaterUsageStats visible={hasMessages} modelUsages={waterUsage.modelUsages} />
 
       {/* Header - animates from centered to top */}
       <header className={`
         flex items-center justify-center gap-2 transition-all duration-250 ease-out
         ${hasMessages
-          ? 'py-4 border-b border-black'
+          ? 'py-6 border-b border-black'
           : 'flex-1'
         }
       `}>
@@ -87,16 +94,23 @@ export function ChatContainer() {
 
       {/* Input area - animates from centered to bottom */}
       <div className={`
-        p-4 transition-all duration-250
+        p-4 transition-all duration-250 bg-white
         ${hasMessages
-          ? 'border-t border-black'
+          ? 'border-t border-black relative z-10'
           : 'flex-1 flex items-start justify-center'
         }
       `}>
-        <div className="w-full max-w-2xl mx-auto">
+        <div className={`
+          w-full max-w-2xl mx-auto
+          ${hasMessages
+            ? ""
+            : "relative z-10"
+          }
+        `}>
           <ChatInput onSend={sendMessage} disabled={isLoading} />
         </div>
       </div>
+      
       <TapPopup visible={showPopup} onComplete={() => setShowPopup(false)} holdDurationMs={waterUsage.holdDurationMs} />
     </div>
   );

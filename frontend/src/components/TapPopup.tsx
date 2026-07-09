@@ -118,7 +118,7 @@ export function TapPopup({ visible, onComplete, holdDurationMs = DEFAULT_HOLD_DU
           <img
             src={currentImage}
             alt="Tap to verify"
-            className="h-50 w-50 object-contain select-none touch-none"
+            className="h-70 w-70 object-contain select-none touch-none"
             draggable={false}
             onMouseDown={startHolding}
             onMouseUp={stopHolding}

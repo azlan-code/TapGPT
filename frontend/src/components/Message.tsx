@@ -13,7 +13,7 @@ export function Message({ message, isTyping, blurred }: MessageProps) {
   const isUser = message.role === "user";
 
   return (
-    <div className={`flex ${isUser ? "justify-end" : "justify-start"} mb-4`}>
+    <div className={`flex ${isUser ? "justify-end" : "justify-start"} mb-4 relative z-10`}>
       <div
         className={`max-w-[80%] px-4 py-3 rounded-lg border border-black ${
           isUser ? "bg-gray-100" : "bg-white"
