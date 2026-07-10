@@ -89,7 +89,10 @@ export function TapPopup({ visible, onComplete, holdDurationMs = DEFAULT_HOLD_DU
     };
   }, [isHolding]);
 
-  const startHolding = useCallback(() => {
+  const startHolding = useCallback((e?: React.TouchEvent | React.MouseEvent) => {
+    if (e && 'touches' in e) {
+      e.preventDefault();
+    }
     setIsHolding(true);
   }, []);
 
@@ -119,11 +122,12 @@ export function TapPopup({ visible, onComplete, holdDurationMs = DEFAULT_HOLD_DU
             src={currentImage}
             alt="Tap to verify"
             className="h-70 w-70 object-contain select-none touch-none"
+            style={{ WebkitTouchCallout: 'none' }}
             draggable={false}
             onMouseDown={startHolding}
             onMouseUp={stopHolding}
             onMouseLeave={stopHolding}
-            onTouchStart={startHolding}
+            onTouchStart={(e) => { e.preventDefault(); startHolding(e); }}
             onTouchEnd={stopHolding}
             onTouchCancel={stopHolding}
             onContextMenu={handleContextMenu}
