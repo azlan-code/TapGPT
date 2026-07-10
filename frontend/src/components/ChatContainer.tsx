@@ -7,7 +7,7 @@ import { ChatInput } from "./ChatInput";
 import { WaterUsageStats } from "./WaterUsageStats";
 import { TapPopup } from "./TapPopup";
 import tapOffImage from "../assets/images/tap-off.png";
-import asciiSinkImage from "../assets/images/ascii-sink.svg";
+import githubLogo from "../assets/images/github.svg";
 
 export function ChatContainer() {
   const { messages, isLoading, sendMessage } = useChat();
@@ -45,12 +45,6 @@ export function ChatContainer() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      <img
-        src={asciiSinkImage}
-        alt=""
-        aria-hidden="true"
-        className="fixed bottom-0 left-0 pointer-events-none z-0 w-full max-w-[750px]"
-      />
       <WaterUsageStats visible={hasMessages} modelUsages={waterUsage.modelUsages} />
 
       {/* Header - animates from centered to top */}
@@ -64,11 +58,11 @@ export function ChatContainer() {
         <img
           src={tapOffImage}
           alt="Tap"
-          className={`transition-all duration-250 ${hasMessages ? 'h-8' : 'h-12'}`}
+          className={`transition-all duration-250 ${hasMessages ? 'h-8' : 'h-16'}`}
         />
         <h1 className={`
           font-bold text-black transition-all duration-250
-          ${hasMessages ? 'text-2xl' : 'text-4xl'}
+          ${hasMessages ? 'text-2xl' : 'text-6xl'}
         `}>
           TapGPT
         </h1>
@@ -112,6 +106,19 @@ export function ChatContainer() {
       </div>
       
       <TapPopup visible={showPopup} onComplete={() => setShowPopup(false)} holdDurationMs={waterUsage.holdDurationMs} />
+
+      {/* GitHub link - only visible on initial screen */}
+      <a
+        href="https://github.com/azlan-code/TapGPT"
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`
+          fixed bottom-4 left-4 transition-opacity duration-250
+          ${hasMessages ? 'opacity-0 pointer-events-none' : 'opacity-100'}
+        `}
+      >
+        <img src={githubLogo} alt="GitHub" className="w-8 h-8" />
+      </a>
     </div>
   );
 }
