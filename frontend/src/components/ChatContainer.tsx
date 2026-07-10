@@ -35,9 +35,7 @@ export function ChatContainer() {
       // Verify last message is an assistant message with content
       const lastMessage = messages[messages.length - 1];
       if (lastMessage?.role === "assistant" && lastMessage.content) {
-        // Calculate and commit water usage FIRST
         setWaterUsage(calculateWaterUsage(messages));
-        // THEN show popup
         setShowPopup(true);
       }
     }

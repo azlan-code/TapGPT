@@ -31,6 +31,18 @@ npm run dev
 
 The server runs on `http://localhost:3001` by default.
 
+### API Endpoint Configuration
+
+If the frontend can't connect to the server, you may need to update the fetch endpoint in `frontend/src/hooks/useChat.ts`:
+
+```typescript
+// Change this:
+const response = await fetch("/api/chat", {
+
+// To this:
+const response = await fetch("http://localhost:3001/api/chat", {
+```
+
 ### Environment Variables
 
 Create a `.env` file in the `server/` directory:
